@@ -89,7 +89,7 @@ const file_proto_sdm_annotations_proto_rawDesc = "" +
 	"\x03pii\x12\x1d.google.protobuf.FieldOptions\x18҆\x03 \x01(\bR\x03pii:@\n" +
 	"\vquery_index\x12\x1d.google.protobuf.FieldOptions\x18ӆ\x03 \x01(\bR\n" +
 	"queryIndex:7\n" +
-	"\x06hashed\x12\x1d.google.protobuf.FieldOptions\x18Ԇ\x03 \x01(\bR\x06hashedB%Z#codekalari/coding_puzzles/proto/sdmb\x06proto3"
+	"\x06hashed\x12\x1d.google.protobuf.FieldOptions\x18Ԇ\x03 \x01(\bR\x06hashedB)Z'github.com/jinuthankachan/sdm/proto/sdmb\x06proto3"
 
 var file_proto_sdm_annotations_proto_goTypes = []any{
 	(*descriptorpb.FieldOptions)(nil), // 0: google.protobuf.FieldOptions

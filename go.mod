@@ -1,4 +1,4 @@
-module codekalari/coding_puzzles
+module github.com/jinuthankachan/sdm
 
 go 1.25.5
 

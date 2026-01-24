@@ -7,7 +7,7 @@
 package invoice
 
 import (
-	_ "codekalari/coding_puzzles/proto/sdm"
+	_ "github.com/jinuthankachan/sdm/proto/sdm"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -147,7 +147,7 @@ const file_proto_invoice_invoice_proto_rawDesc = "" +
 	"buyer_name\x18\x06 \x01(\tB\x04\x90\xb5\x18\x01R\tbuyerName\x12\x16\n" +
 	"\x06seller\x18\a \x01(\tR\x06seller\x12\x14\n" +
 	"\x05buyer\x18\b \x01(\tR\x05buyer\x12\x16\n" +
-	"\x06amount\x18\t \x01(\x03R\x06amountB)Z'codekalari/coding_puzzles/proto/invoiceb\x06proto3"
+	"\x06amount\x18\t \x01(\x03R\x06amountB-Z+github.com/jinuthankachan/sdm/proto/invoiceb\x06proto3"
 
 var (
 	file_proto_invoice_invoice_proto_rawDescOnce sync.Once
