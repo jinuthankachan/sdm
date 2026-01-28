@@ -19,6 +19,12 @@ SDM is a toolset for Golang projects to manage sensitive data (PII) by separatin
     go install github.com/jinuthankachan/sdm/cmd/sdm@latest
     ```
 
+2.  **Install `protoc-gen-go`**:
+    The `sdm` tool relies on `protoc-gen-go` to generate standard Protobuf Go code.
+    ```bash
+    go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+    ```
+
 ## Usage
 
 ### 1. Define your Data Model
@@ -43,16 +49,17 @@ message Invoice {
 
 ### 2. Generate Code
 
-Run the `sdm` tool:
+Run the `sdm` tool. You can optionally specify an output directory with `-o`.
 
 ```bash
-sdm generate proto/invoice/invoice.proto
+sdm generate proto/invoice/invoice.proto -o gen_out
 ```
 
-This will generate:
-*   `invoice_sdm_model.go`: Structs.
-*   `invoice_sdm_schema.sql`: SQL DDL.
-*   `invoice_sdm_repo.go`: Repository implementation.
+This will generate the following files in `gen_out/proto/invoice/`:
+*   `invoice.pb.go`: Standard Protobuf Go code.
+*   `invoice_sdm_model.go`: SDM Structs (`...Pii`, `...Chain`, `...View`).
+*   `invoice_sdm_schema.sql`: SQL DDL for PII, Chain tables and Views.
+*   `invoice_sdm_repo.go`: GORM Repository implementation.
 
 ### 3. Use in Go
 
@@ -78,6 +85,59 @@ func main() {
     view, err := repo.Fetch(ctx, "inv_123")
 }
 ```
+
+## Using as a Tool / SDK in External Projects
+
+To use SDM in your own Go project:
+
+1.  **Install the tools**:
+    ```bash
+    go install github.com/jinuthankachan/sdm/cmd/sdm@latest
+    go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+    ```
+
+2.  **Import annotations**:
+    *   Vendor the `sdm` dependency to make `annotations.proto` available.
+    *   Example `go.mod`:
+        ```go
+        require github.com/jinuthankachan/sdm v0.0.0-xxxx
+        ```
+    *   Run `go mod vendor`.
+
+3.  **Define your Proto**:
+    ```protobuf
+    import "github.com/jinuthankachan/sdm/proto/sdm/annotations.proto";
+    ```
+
+4.  **Generate**:
+    ```bash
+    sdm generate path/to/your.proto -o .
+    ```
+
+## Using with Buf
+
+You can also use SDM as a standard protoc plugin with `buf`.
+
+1.  **Build/Install the plugin**:
+    ```bash
+    go build -o bin/protoc-gen-sdm ./cmd/protoc-gen-sdm
+    export PATH=$PATH:$(pwd)/bin
+    ```
+2.  **Configure `buf.gen.yaml`**:
+    ```yaml
+    version: v1
+    plugins:
+      - plugin: go
+        out: .
+        opt: paths=source_relative
+      - plugin: sdm
+        out: .
+        opt: paths=source_relative
+    ```
+3.  **Generate**:
+    ```bash
+    buf generate
+    ```
 
 ## Generated Schema Structure
 

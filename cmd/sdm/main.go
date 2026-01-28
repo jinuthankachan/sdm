@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -53,7 +52,7 @@ func runGenerate(cmd *cobra.Command, args []string, outputDir string) error {
 		}),
 	}
 
-	files, err := compiler.Compile(context.Background(), args...)
+	files, err := compiler.Compile(cmd.Context(), args...)
 	if err != nil {
 		return fmt.Errorf("failed to compile protos: %w", err)
 	}
