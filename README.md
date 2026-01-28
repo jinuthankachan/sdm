@@ -14,20 +14,10 @@ SDM is a toolset for Golang projects to manage sensitive data (PII) by separatin
 
 ## Installation
 
-1.  **Clone the repository**:
+1.  **Install the Tool**:
     ```bash
-    git clone https://github.com/jinuthankachan/sdm.git
-    cd sdm
+    go install github.com/jinuthankachan/sdm/cmd/sdm@latest
     ```
-
-2.  **Build the Plugin**:
-    ```bash
-    go build -o bin/protoc-gen-sdm ./cmd/protoc-gen-sdm
-    ```
-
-3.  **Ensure `protoc` is installed**: You need the Protocol Buffers compiler.
-
-4.  **Ensure `buf` is installed**: Refer [here](https://buf.build/docs/cli/installation/#source)
 
 ## Usage
 
@@ -53,15 +43,10 @@ message Invoice {
 
 ### 2. Generate Code
 
-Run `protoc` with the `protoc-gen-sdm` plugin:
+Run the `sdm` tool:
 
 ```bash
-export PATH=$PATH:$(pwd)/bin
-protoc --plugin=bin/protoc-gen-sdm \
-       --sdm_out=. --sdm_opt=paths=source_relative \
-       --go_out=. --go_opt=paths=source_relative \
-       -I . -I proto \
-       proto/invoice/invoice.proto
+sdm generate proto/invoice/invoice.proto
 ```
 
 This will generate:
@@ -93,39 +78,6 @@ func main() {
     view, err := repo.Fetch(ctx, "inv_123")
 }
 ```
-
-## Using as a Tool / SDK in External Projects
-
-To use SDM in your own Go project:
-
-1.  **Install the plugin**:
-    ```bash
-    go install github.com/jinuthankachan/sdm/cmd/protoc-gen-sdm@latest
-    ```
-
-2.  **Import annotations**:
-    *   Vendor the `sdm` dependency to make `annotations.proto` available for `protoc`.
-    *   Example `go.mod`:
-        ```go
-        require github.com/jinuthankachan/sdm v0.0.0-xxxx
-        ```
-    *   Run `go mod vendor`.
-
-3.  **Define your Proto**:
-    ```protobuf
-    import "github.com/jinuthankachan/sdm/proto/sdm/annotations.proto";
-    ```
-
-4.  **Generate**:
-    ```bash
-    protoc --plugin=protoc-gen-sdm \
-           --sdm_out=. --sdm_opt=paths=source_relative \
-           --go_out=. --go_opt=paths=source_relative \
-           -I . -I vendor/github.com/jinuthankachan/sdm \
-           path/to/your.proto
-    ```
-
-Check the `example/demo` directory for a complete working example.
 
 ## Generated Schema Structure
 
