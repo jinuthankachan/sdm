@@ -27,6 +27,8 @@ SDM is a toolset for Golang projects to manage sensitive data (PII) by separatin
 
 3.  **Ensure `protoc` is installed**: You need the Protocol Buffers compiler.
 
+4.  **Ensure `buf` is installed**: Refer [here](https://buf.build/docs/cli/installation/#source)
+
 ## Usage
 
 ### 1. Define your Data Model
