@@ -27,6 +27,8 @@ SDM is a toolset for Golang projects to manage sensitive data (PII) by separatin
 
 3.  **Ensure `protoc` is installed**: You need the Protocol Buffers compiler.
 
+4.  **Ensure `buf` is installed**: Refer [here](https://buf.build/docs/cli/installation/#source)
+
 ## Usage
 
 ### 1. Define your Data Model
@@ -91,6 +93,39 @@ func main() {
     view, err := repo.Fetch(ctx, "inv_123")
 }
 ```
+
+## Using as a Tool / SDK in External Projects
+
+To use SDM in your own Go project:
+
+1.  **Install the plugin**:
+    ```bash
+    go install github.com/jinuthankachan/sdm/cmd/protoc-gen-sdm@latest
+    ```
+
+2.  **Import annotations**:
+    *   Vendor the `sdm` dependency to make `annotations.proto` available for `protoc`.
+    *   Example `go.mod`:
+        ```go
+        require github.com/jinuthankachan/sdm v0.0.0-xxxx
+        ```
+    *   Run `go mod vendor`.
+
+3.  **Define your Proto**:
+    ```protobuf
+    import "github.com/jinuthankachan/sdm/proto/sdm/annotations.proto";
+    ```
+
+4.  **Generate**:
+    ```bash
+    protoc --plugin=protoc-gen-sdm \
+           --sdm_out=. --sdm_opt=paths=source_relative \
+           --go_out=. --go_opt=paths=source_relative \
+           -I . -I vendor/github.com/jinuthankachan/sdm \
+           path/to/your.proto
+    ```
+
+Check the `example/demo` directory for a complete working example.
 
 ## Generated Schema Structure
 
