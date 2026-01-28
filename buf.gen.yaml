@@ -3,3 +3,6 @@ plugins:
   - plugin: go
     out: .
     opt: paths=source_relative
+  - plugin: sdm
+    out: .
+    opt: paths=source_relative

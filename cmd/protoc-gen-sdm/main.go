@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+
+	"github.com/jinuthankachan/sdm/pkg/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/types/pluginpb"
 )
@@ -16,7 +18,7 @@ func main() {
 			if !f.Generate {
 				continue
 			}
-			generateFile(gen, f)
+			generator.GenerateFile(gen, f)
 		}
 		return nil
 	})
