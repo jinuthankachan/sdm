@@ -23,13 +23,18 @@ func main() {
 		Short: "SDM Tool",
 	}
 
+	var outputDir string
+
 	var generateCmd = &cobra.Command{
 		Use:   "generate [proto_files...]",
 		Short: "Generate SDM files from proto definitions",
 		Args:  cobra.MinimumNArgs(1),
-		RunE:  runGenerate,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runGenerate(cmd, args, outputDir)
+		},
 	}
 
+	generateCmd.Flags().StringVarP(&outputDir, "output", "o", "", "Output directory for generated files")
 	rootCmd.AddCommand(generateCmd)
 
 	if err := rootCmd.Execute(); err != nil {
@@ -38,7 +43,7 @@ func main() {
 	}
 }
 
-func runGenerate(cmd *cobra.Command, args []string) error {
+func runGenerate(cmd *cobra.Command, args []string, outputDir string) error {
 	// 1. Compile Proto Files
 	compiler := protocompile.Compiler{
 		Resolver: protocompile.WithStandardImports(&protocompile.SourceResolver{
@@ -102,6 +107,11 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 
 	for _, file := range response.File {
 		name := file.GetName()
+
+		if outputDir != "" {
+			name = filepath.Join(outputDir, name)
+		}
+
 		content := file.GetContent()
 
 		// Ensure dir exists
