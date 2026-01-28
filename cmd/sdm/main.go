@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/bufbuild/protocompile"
@@ -105,6 +107,12 @@ func runGenerate(cmd *cobra.Command, args []string, outputDir string) error {
 		return fmt.Errorf("generator error: %s", response.GetError())
 	}
 
+	// 6. Run protoc-gen-go
+	if err := runProtocGenGo(req, response); err != nil {
+		// Just warn? No, let's return error but make it clear.
+		return fmt.Errorf("failed to run protoc-gen-go (ensure it is in PATH): %w", err)
+	}
+
 	for _, file := range response.File {
 		name := file.GetName()
 
@@ -125,5 +133,42 @@ func runGenerate(cmd *cobra.Command, args []string, outputDir string) error {
 		fmt.Printf("Generated: %s\n", name)
 	}
 
+	return nil
+}
+
+func runProtocGenGo(req *pluginpb.CodeGeneratorRequest, resp *pluginpb.CodeGeneratorResponse) error {
+	// Marshal request
+	data, err := proto.Marshal(req)
+	if err != nil {
+		return err
+	}
+
+	cmd := exec.Command("protoc-gen-go")
+	cmd.Stdin = bytes.NewReader(data)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		if os.IsNotExist(err) || err.Error() == "exec: \"protoc-gen-go\": executable file not found in $PATH" {
+			// Ignore if not present? No, user wants it.
+			return fmt.Errorf("protoc-gen-go executable not found in $PATH")
+		}
+		return fmt.Errorf("exec error: %v, stderr: %s", err, stderr.String())
+	}
+
+	// Unmarshal response
+	var goResp pluginpb.CodeGeneratorResponse
+	if err := proto.Unmarshal(out.Bytes(), &goResp); err != nil {
+		return err
+	}
+
+	if goResp.Error != nil {
+		return fmt.Errorf("protoc-gen-go error: %s", goResp.GetError())
+	}
+
+	// Merge files
+	resp.File = append(resp.File, goResp.File...)
 	return nil
 }
