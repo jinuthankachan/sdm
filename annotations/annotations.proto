@@ -4,7 +4,7 @@ package sdm;
 
 import "google/protobuf/descriptor.proto";
 
-option go_package = "github.com/jinuthankachan/sdm/proto/sdm";
+option go_package = "github.com/jinuthankachan/sdm/annotations";
 
 extend google.protobuf.FieldOptions {
   bool primary_key = 50000;
