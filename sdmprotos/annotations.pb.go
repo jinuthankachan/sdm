@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v5.29.3
-// source: annotations/annotations.proto
+// source: sdmprotos/annotations.proto
 
-package annotations
+package sdmprotos
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -21,14 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var file_annotations_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
+var file_sdmprotos_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*bool)(nil),
 		Field:         50000,
 		Name:          "sdm.primary_key",
 		Tag:           "varint,50000,opt,name=primary_key",
-		Filename:      "annotations/annotations.proto",
+		Filename:      "sdmprotos/annotations.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -36,7 +36,7 @@ var file_annotations_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         50001,
 		Name:          "sdm.chain_identifier_key",
 		Tag:           "varint,50001,opt,name=chain_identifier_key",
-		Filename:      "annotations/annotations.proto",
+		Filename:      "sdmprotos/annotations.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -44,7 +44,7 @@ var file_annotations_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         50002,
 		Name:          "sdm.pii",
 		Tag:           "varint,50002,opt,name=pii",
-		Filename:      "annotations/annotations.proto",
+		Filename:      "sdmprotos/annotations.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -52,7 +52,7 @@ var file_annotations_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         50003,
 		Name:          "sdm.query_index",
 		Tag:           "varint,50003,opt,name=query_index",
-		Filename:      "annotations/annotations.proto",
+		Filename:      "sdmprotos/annotations.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -60,41 +60,41 @@ var file_annotations_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         50004,
 		Name:          "sdm.hashed",
 		Tag:           "varint,50004,opt,name=hashed",
-		Filename:      "annotations/annotations.proto",
+		Filename:      "sdmprotos/annotations.proto",
 	},
 }
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
 	// optional bool primary_key = 50000;
-	E_PrimaryKey = &file_annotations_annotations_proto_extTypes[0]
+	E_PrimaryKey = &file_sdmprotos_annotations_proto_extTypes[0]
 	// optional bool chain_identifier_key = 50001;
-	E_ChainIdentifierKey = &file_annotations_annotations_proto_extTypes[1]
+	E_ChainIdentifierKey = &file_sdmprotos_annotations_proto_extTypes[1]
 	// optional bool pii = 50002;
-	E_Pii = &file_annotations_annotations_proto_extTypes[2]
+	E_Pii = &file_sdmprotos_annotations_proto_extTypes[2]
 	// optional bool query_index = 50003;
-	E_QueryIndex = &file_annotations_annotations_proto_extTypes[3]
+	E_QueryIndex = &file_sdmprotos_annotations_proto_extTypes[3]
 	// optional bool hashed = 50004;
-	E_Hashed = &file_annotations_annotations_proto_extTypes[4]
+	E_Hashed = &file_sdmprotos_annotations_proto_extTypes[4]
 )
 
-var File_annotations_annotations_proto protoreflect.FileDescriptor
+var File_sdmprotos_annotations_proto protoreflect.FileDescriptor
 
-const file_annotations_annotations_proto_rawDesc = "" +
+const file_sdmprotos_annotations_proto_rawDesc = "" +
 	"\n" +
-	"\x1dannotations/annotations.proto\x12\x03sdm\x1a google/protobuf/descriptor.proto:@\n" +
+	"\x1bsdmprotos/annotations.proto\x12\x03sdm\x1a google/protobuf/descriptor.proto:@\n" +
 	"\vprimary_key\x12\x1d.google.protobuf.FieldOptions\x18І\x03 \x01(\bR\n" +
 	"primaryKey:Q\n" +
 	"\x14chain_identifier_key\x12\x1d.google.protobuf.FieldOptions\x18ц\x03 \x01(\bR\x12chainIdentifierKey:1\n" +
 	"\x03pii\x12\x1d.google.protobuf.FieldOptions\x18҆\x03 \x01(\bR\x03pii:@\n" +
 	"\vquery_index\x12\x1d.google.protobuf.FieldOptions\x18ӆ\x03 \x01(\bR\n" +
 	"queryIndex:7\n" +
-	"\x06hashed\x12\x1d.google.protobuf.FieldOptions\x18Ԇ\x03 \x01(\bR\x06hashedB+Z)github.com/jinuthankachan/sdm/annotationsb\x06proto3"
+	"\x06hashed\x12\x1d.google.protobuf.FieldOptions\x18Ԇ\x03 \x01(\bR\x06hashedB)Z'github.com/jinuthankachan/sdm/sdmprotosb\x06proto3"
 
-var file_annotations_annotations_proto_goTypes = []any{
+var file_sdmprotos_annotations_proto_goTypes = []any{
 	(*descriptorpb.FieldOptions)(nil), // 0: google.protobuf.FieldOptions
 }
-var file_annotations_annotations_proto_depIdxs = []int32{
+var file_sdmprotos_annotations_proto_depIdxs = []int32{
 	0, // 0: sdm.primary_key:extendee -> google.protobuf.FieldOptions
 	0, // 1: sdm.chain_identifier_key:extendee -> google.protobuf.FieldOptions
 	0, // 2: sdm.pii:extendee -> google.protobuf.FieldOptions
@@ -107,26 +107,26 @@ var file_annotations_annotations_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_annotations_annotations_proto_init() }
-func file_annotations_annotations_proto_init() {
-	if File_annotations_annotations_proto != nil {
+func init() { file_sdmprotos_annotations_proto_init() }
+func file_sdmprotos_annotations_proto_init() {
+	if File_sdmprotos_annotations_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_annotations_annotations_proto_rawDesc), len(file_annotations_annotations_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sdmprotos_annotations_proto_rawDesc), len(file_sdmprotos_annotations_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 5,
 			NumServices:   0,
 		},
-		GoTypes:           file_annotations_annotations_proto_goTypes,
-		DependencyIndexes: file_annotations_annotations_proto_depIdxs,
-		ExtensionInfos:    file_annotations_annotations_proto_extTypes,
+		GoTypes:           file_sdmprotos_annotations_proto_goTypes,
+		DependencyIndexes: file_sdmprotos_annotations_proto_depIdxs,
+		ExtensionInfos:    file_sdmprotos_annotations_proto_extTypes,
 	}.Build()
-	File_annotations_annotations_proto = out.File
-	file_annotations_annotations_proto_goTypes = nil
-	file_annotations_annotations_proto_depIdxs = nil
+	File_sdmprotos_annotations_proto = out.File
+	file_sdmprotos_annotations_proto_goTypes = nil
+	file_sdmprotos_annotations_proto_depIdxs = nil
 }

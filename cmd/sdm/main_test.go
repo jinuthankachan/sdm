@@ -43,7 +43,7 @@ func TestGenerateCmd(t *testing.T) {
 	userProtoContent := `
 syntax = "proto3";
 package test;
-import "annotations/annotations.proto";
+import "sdmprotos/annotations.proto";
 option go_package = "example/test";
 
 message TestMessage {
