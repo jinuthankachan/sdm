@@ -246,13 +246,20 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 
 	// Determine inputs
 	var filesToGenerate []string
+	configDir := filepath.Dir(cfgFile)
+
 	if protoFile != "" {
 		// If protoFile is specified, we add its directory to import paths
 		// and use the base name for compilation to ensure resolver finds it correctly.
 		// This avoids issues where absolute paths are concatenated weirdly with import paths.
 		filesToGenerate = []string{filepath.Base(protoFile)}
 	} else {
-		filesToGenerate = cfg.UserProtos
+		for _, p := range cfg.UserProtos {
+			if !filepath.IsAbs(p) {
+				p = filepath.Join(configDir, p)
+			}
+			filesToGenerate = append(filesToGenerate, p)
+		}
 	}
 
 	if len(filesToGenerate) == 0 {
@@ -263,11 +270,17 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	out := outputDir
 	if out == "" {
 		out = cfg.Output
+		if out != "" && !filepath.IsAbs(out) {
+			out = filepath.Join(configDir, out)
+		}
 	}
 
 	sdmProtoDir := cfg.SdmProto
 	if sdmProtoDir == "" {
 		sdmProtoDir = "sdm"
+	}
+	if !filepath.IsAbs(sdmProtoDir) {
+		sdmProtoDir = filepath.Join(configDir, sdmProtoDir)
 	}
 
 	importPaths := []string{".", sdmProtoDir, "vendor"}

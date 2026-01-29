@@ -32,7 +32,6 @@ func TestGenerateCmd(t *testing.T) {
 	// Locate project root to find proto files
 	cwd, _ := os.Getwd()
 	projectRoot := filepath.Dir(filepath.Dir(cwd))
-	protoDir := filepath.Join(projectRoot, "proto")
 
 	tmpDir, err := os.MkdirTemp("", "sdm-test-gen")
 	if err != nil {
@@ -44,7 +43,7 @@ func TestGenerateCmd(t *testing.T) {
 	userProtoContent := `
 syntax = "proto3";
 package test;
-import "sdm/annotations.proto";
+import "annotations/annotations.proto";
 option go_package = "example/test";
 
 message TestMessage {
@@ -62,7 +61,7 @@ message TestMessage {
 	// But runGenerate logic: "sdmProtoDir := cfg.SdmProto ... ImportPaths := ... sdmProtoDir"
 	// So we need to provide a config that points to the sdm protos.
 
-	configContent := "sdm-proto: " + protoDir + "\n"
+	configContent := "sdm-proto: " + projectRoot + "\n"
 	configPath := filepath.Join(tmpDir, "sdm.cfg.yaml")
 	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
 		t.Fatal(err)
