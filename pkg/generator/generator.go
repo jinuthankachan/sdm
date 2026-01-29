@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	"github.com/jinuthankachan/sdm/proto/sdm" // Import the generated code for annotations
+	sdm "github.com/jinuthankachan/sdm/annotations" // Import the generated code for annotations
 )
 
 // GenerateFile generates the SDM artifacts for a single proto file.
