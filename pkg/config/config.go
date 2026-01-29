@@ -9,6 +9,7 @@ import (
 type Config struct {
 	SdmVersion string   `yaml:"sdm"`
 	SdmProto   string   `yaml:"sdm-proto"`
+	Source     string   `yaml:"source"`
 	UserProtos []string `yaml:"user-protos"`
 	Output     string   `yaml:"output"`
 }

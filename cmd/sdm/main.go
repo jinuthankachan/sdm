@@ -203,7 +203,7 @@ func runSetup(cmd *cobra.Command, args []string) error {
 
 	sdmProtoDir := cfg.SdmProto
 	if sdmProtoDir == "" {
-		sdmProtoDir = "sdm" // default
+		sdmProtoDir = "sdmprotos" // default
 	}
 
 	fmt.Printf("Exporting sdm protos to %s...\n", sdmProtoDir)
@@ -232,12 +232,9 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	// Parse config
 	cfg, err := config.LoadConfig(cfgFile)
 	if err != nil {
-		// If config file is missing but arguments are provided, we might still proceed?
-		// "It has the following arguments ... --cfg".
-		// If file doesn't exist and user didn't specify one, maybe try proceeding with defaults if possible,
-		// but probably safer to error or warn.
-		// However, if user provides --proto and --out, maybe they don't need config for that specific run?
-		// Let's treat config as optional if flags are provided, but the requirements say "Refer the config file".
+		// It has the following arguments ... --cfg, --proto and --out.
+		// However, if user provides --proto and --out, they don't need config for that specific run
+		// Let's treat config as optional if flags are provided".
 		if !os.IsNotExist(err) {
 			return fmt.Errorf("failed to load config %s: %w", cfgFile, err)
 		}
@@ -245,8 +242,15 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	}
 
 	// Determine inputs
+	absCfgFile, _ := filepath.Abs(cfgFile)
+	configDir := filepath.Dir(absCfgFile)
 	var filesToGenerate []string
-	configDir := filepath.Dir(cfgFile)
+
+	// // Resolve Source directory
+	// sourceDir := cfg.Source
+	// if sourceDir != "" && !filepath.IsAbs(sourceDir) {
+	// 	sourceDir = filepath.Join(configDir, sourceDir)
+	// }
 
 	if protoFile != "" {
 		// If protoFile is specified, we add its directory to import paths
@@ -255,9 +259,9 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 		filesToGenerate = []string{filepath.Base(protoFile)}
 	} else {
 		for _, p := range cfg.UserProtos {
-			if !filepath.IsAbs(p) {
-				p = filepath.Join(configDir, p)
-			}
+			// 	}
+			// }
+
 			filesToGenerate = append(filesToGenerate, p)
 		}
 	}
@@ -277,13 +281,18 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 
 	sdmProtoDir := cfg.SdmProto
 	if sdmProtoDir == "" {
-		sdmProtoDir = "sdm"
+		sdmProtoDir = "sdmprotos"
 	}
 	if !filepath.IsAbs(sdmProtoDir) {
 		sdmProtoDir = filepath.Join(configDir, sdmProtoDir)
 	}
 
-	importPaths := []string{".", sdmProtoDir, "vendor"}
+	importPaths := []string{".", configDir, sdmProtoDir}
+	// if sourceDir != "" {
+	// 	// Add sourceDir to import paths, preferably early
+	// 	importPaths = append([]string{sourceDir}, importPaths...)
+	// }
+
 	if protoFile != "" {
 		dir := filepath.Dir(protoFile)
 		if dir != "." {
