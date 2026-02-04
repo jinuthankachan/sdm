@@ -249,10 +249,10 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	configDir := filepath.Dir(cfgFile)
 
 	if protoFile != "" {
-		// If protoFile is specified, we add its directory to import paths
-		// and use the base name for compilation to ensure resolver finds it correctly.
-		// This avoids issues where absolute paths are concatenated weirdly with import paths.
-		filesToGenerate = []string{filepath.Base(protoFile)}
+		// We add its directory to import paths
+		// and use the path for compilation. Our new resolution logic will
+		// find the best relative path.
+		filesToGenerate = []string{protoFile}
 	} else {
 		for _, p := range cfg.UserProtos {
 			if !filepath.IsAbs(p) {
@@ -297,6 +297,32 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 			ImportPaths: importPaths,
 		}),
 	}
+
+	// Make filesToGenerate relative to import paths if possible
+	var resolvedFilesToGenerate []string
+	for _, f := range filesToGenerate {
+		absF, err := filepath.Abs(f)
+		if err != nil {
+			resolvedFilesToGenerate = append(resolvedFilesToGenerate, f)
+			continue
+		}
+
+		bestRel := f
+		for _, ip := range importPaths {
+			absIP, err := filepath.Abs(ip)
+			if err != nil {
+				continue
+			}
+			rel, err := filepath.Rel(absIP, absF)
+			if err == nil && !strings.HasPrefix(rel, "..") {
+				if resolvedFilesToGenerate == nil || len(rel) < len(bestRel) {
+					bestRel = rel
+				}
+			}
+		}
+		resolvedFilesToGenerate = append(resolvedFilesToGenerate, bestRel)
+	}
+	filesToGenerate = resolvedFilesToGenerate
 
 	files, err := compiler.Compile(context.Background(), filesToGenerate...)
 	if err != nil {
