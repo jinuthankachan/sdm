@@ -150,6 +150,9 @@ sdm: "%s"
 
 # Directory where to write the generated files
 # output: "gen/"
+
+# Directory where to write the generated SQL files (defaults to output if not set)
+# output-sql: "gen/sql/"
 `, version)
 	if err := os.WriteFile("sdm.cfg.yaml", []byte(content), 0644); err != nil {
 		return fmt.Errorf("failed to write sdm.cfg.yaml: %w", err)
@@ -279,6 +282,14 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 		}
 	}
 
+	outSQL := cfg.OutputSQL
+	if outSQL != "" && !filepath.IsAbs(outSQL) {
+		outSQL = filepath.Join(configDir, outSQL)
+	}
+	if outSQL == "" {
+		outSQL = out
+	}
+
 	sdmProtoDir := cfg.SdmProto
 	if sdmProtoDir == "" {
 		sdmProtoDir = "sdmprotos"
@@ -388,8 +399,15 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 
 	for _, file := range response.File {
 		name := file.GetName()
-		if out != "" {
-			name = filepath.Join(out, name)
+		targetDir := out
+		if strings.HasSuffix(name, ".sql") {
+			targetDir = outSQL
+			// Flatten the path for SQL files
+			name = filepath.Base(name)
+		}
+
+		if targetDir != "" {
+			name = filepath.Join(targetDir, name)
 		}
 
 		content := file.GetContent()
