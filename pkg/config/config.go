@@ -12,6 +12,7 @@ type Config struct {
 	Source     string   `yaml:"source"`
 	UserProtos []string `yaml:"user-protos"`
 	Output     string   `yaml:"output"`
+	OutputSQL  string   `yaml:"output-sql"`
 }
 
 func LoadConfig(path string) (*Config, error) {
