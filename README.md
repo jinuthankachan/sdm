@@ -37,11 +37,13 @@ SDM is a toolset for Golang projects to manage sensitive data (PII) by separatin
 
 ## Usage
 
+An example can be found at [SDM examples repo](https://github.com/jinuthankachan/sdm-examples)
+
 ### 1. Define your Data Model
 
 Create a `.proto` file (e.g., `proto/invoice/invoice.proto`) and import `annotations/annotations.proto`. Annotate your fields:
 
-```protobuf
+```proto
 syntax = "proto3";
 package invoice;
 
