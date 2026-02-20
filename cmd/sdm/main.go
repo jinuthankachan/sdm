@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"runtime/debug"
 	"strings"
-	"time"
 
 	"github.com/bufbuild/protocompile"
 	"github.com/spf13/cobra"
@@ -398,15 +397,13 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to run protoc-gen-go: %w", err)
 	}
 
-	timestamp := time.Now().Unix()
-
 	for _, file := range response.File {
 		name := file.GetName()
 		targetDir := out
 		if strings.HasSuffix(name, ".sql") {
 			targetDir = outSQL
 			// Flatten the path for SQL files and prepend timestamp
-			name = fmt.Sprintf("%d_%s", timestamp, filepath.Base(name))
+			name = fmt.Sprintf("%s", filepath.Base(name))
 		}
 
 		if targetDir != "" {
