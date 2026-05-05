@@ -1,4 +1,6 @@
-# Sensitive Data Management (SDM)
+# Sensitive Data Management (SDM) [unmaintained]
+
+**Project is moved to [kapow-tech](https://github.com/kapow-tech/sdm)**
 
 SDM is a toolset for Golang projects to manage sensitive data (PII) by separating it from public chain data using Protobuf annotations. It automatically generates Go models, SQL schemas, and Repository functions to handle the data flow.
 
